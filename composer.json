@@ -1,0 +1,47 @@
+{
+	"name": "mizzou-wordpress/miz-manager-role",
+	"description": "A WordPress Plugin that adds custom RichText formats to Block Editor.",
+	"type": "wordpress-plugin",
+	"authors": [
+		{
+			"name": "Travis Cook",
+			"email": "cooktw@missouri.edu"
+		}
+	],
+	"minimum-stability": "stable",
+	"require": {},
+	"require-dev": {
+		"phpcompatibility/php-compatibility": "^9.3",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpcsstandards/phpcsutils": "^1.0",
+		"wp-coding-standards/wpcs": "^2.3"
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://packages.missouri.edu/php/"
+		}
+	],
+	"support": {
+		"issues": "https://gitlab.com/university-of-missouri/mizzou-digital/wordpress/wp-plugins/miz-manager-role/issues",
+		"source": "https://gitlab.com/university-of-missouri/mizzou-digital/wordpress/wp-plugins/miz-manager-role",
+		"wiki": "https://gitlab.com/university-of-missouri/mizzou-digital/wordpress/wp-plugins/miz-manager-role/-/wikis/home"
+	},
+	"scripts": {
+		"format": "phpcbf --standard=phpcs.xml --report-summary --report-source",
+		"lint": "phpcs --standard=phpcs.xml"
+	},
+	"archive": {
+		"exclude": [
+			".editorconfig",
+			".nvmrc",
+			"src"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"composer/installers": true
+		}
+	}
+}

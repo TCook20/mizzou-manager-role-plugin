@@ -1,0 +1,8 @@
+.babelrc
+.editorconfig
+.eslint*
+.gitlab-ci.yml
+.nvmrc
+.prettierrc
+.releaserc
+.wp-env.json

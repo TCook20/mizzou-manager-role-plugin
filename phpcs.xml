@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards for Mizzou WordPress Blocks">
+	<!--
+	Prevent errors caused by WordPress Coding Standards not supporting PHP 8.0+.
+	See https://github.com/WordPress/WordPress-Coding-Standards/issues/2035
+	-->
+	<ini name="error_reporting" value="E_ALL &#38; ~E_DEPRECATED" />
+
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+	</rule>
+
+	<config name="testVersion" value="8.1"/>
+	<rule ref="PHPCompatibility">
+		<include-pattern>*\.php$</include-pattern>
+	</rule>
+
+	<arg name="extensions" value="php"/>
+
+	<file>.</file>
+	<!-- Exclude Vendor directory -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<!-- Exclude Build directory -->
+	<exclude-pattern>*/build/*</exclude-pattern>
+	<!-- Exclude node_modules directory -->
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<!-- Exclude block.asset.php file -->
+	<exclude-pattern>*/**/block.asset.php</exclude-pattern>
+</ruleset>
