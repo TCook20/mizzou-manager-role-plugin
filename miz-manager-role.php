@@ -51,3 +51,66 @@ function mizzouAddManagerRole() {
 		}
 	}
 }
+
+/**
+ * Helper function get getting roles that the user is allowed to create/edit/delete.
+ *
+ * @param   WP_User $user
+ * @return  array
+ */
+function mizzouGetAllowedRoles( $user ) {
+	$allowed = array();
+
+	if ( in_array( 'administrator', $user->roles ) ) { // Admin can edit all roles.
+		$allowed = array_keys( $GLOBALS['wp_roles']->roles );
+	} elseif ( in_array( 'manager', $user->roles ) ) {
+		$allowed[] = 'super-editor';
+		$allowed[] = 'editor';
+		$allowed[] = 'contributor';
+		$allowed[] = 'subscriber';
+	}
+
+	return $allowed;
+}
+
+/**
+ * Remove roles that are not allowed for the current user role.
+ */
+function mizzouEditRoles( $roles ) {
+	if ( $user = wp_get_current_user() ) {
+		$allowed = mizzouGetAllowedRoles( $user );
+
+		foreach ( $roles as $role => $caps ) {
+			if ( ! in_array( $role, $allowed ) ) {
+				unset( $roles[ $role ] );
+			}
+		}
+	}
+
+	return $roles;
+}
+
+add_filter( 'editable_roles', 'mizzouEditRoles' );
+
+/**
+ * Prevent users deleting/editing users with a role outside their allowance.
+ */
+function mizzouCapUserRoles( $caps, $cap, $user_ID, $args ) {
+	if ( ( $cap === 'edit_user' || $cap === 'delete_user' ) && $args ) {
+		$the_user = get_userdata( $user_ID ); // The user performing the task.
+		$user     = get_userdata( $args[0] ); // The user being edited/deleted.
+
+		if ( $the_user && $user && $the_user->ID != $user->ID /* User can always edit self */ ) {
+			$allowed = mizzouGetAllowedRoles( $the_user );
+
+			if ( array_diff( $user->roles, $allowed ) ) {
+				// Target user has roles outside of our limits.
+				$caps[] = 'not_allowed';
+			}
+		}
+	}
+
+	return $caps;
+}
+
+add_filter( 'map_meta_cap', 'mizzouCapUserRoles', 10, 4 );
